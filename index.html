@@ -1,1 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study MCQ App</title>
 
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3f4fb;
+  color:#222;
+  transition:.3s;
+}
+
+header{
+  background:linear-gradient(135deg,#493be8,#6654ed);
+  color:white;
+  text-align:center;
+  padding:30px 15px;
+}
+
+header h1{
+  margin:0;
+  font-size:34px;
+}
+
+header p{
+  font-size:18px;
+}
+
+.container{
+  max-width:700px;
+  margin:35px auto;
+  padding:15px;
+}
+
+.card{
+  background:white;
+  border-radius:22px;
+  padding:25px;
+  margin-bottom:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,.1);
+}
+
+h2{
+  margin-top:0;
+}
+
+button{
+  width:100%;
+  padding:16px;
+  margin:8px 0;
+  border:0;
+  border-radius:14px;
+  background:#5144e8;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+.option{
+  background:#eef0ff;
+  color:#222;
+  text-align:left;
+}
+
+.option.correct{
+  background:#b9f6c5;
+}
+
+.option.wrong{
+  background:#ffc4c4;
+}
+
+input[type=text]{
+  width:100%;
+  padding:15px;
+  border:2px solid #ddd;
+  border-radius:12px;
+  font-size:16px;
+}
+
+input[type=file]{
+  width:100%;
+  padding:12px;
+}
+
+.hidden{
+  display:none !important;
+}
+
+.feedback{
+  margin:15px 0;
+  padding:14px;
+  border-radius:12px;
+  font-weight:bold;
+}
+
+.score{
+  font-size:28px;
+  font-weight:bold;
+  text-align:center;
+}
+
+.small{
+  color:#666;
+  font-size:14px;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#777;
+}
+
+/* DARK MODE */
+
+body.dark{
+  background:#121212;
+  color:#eee;
+}
+
+body.dark .card{
+  background:#1e1e1e;
+  color:#eee;
+}
+
+body.dark .option{
+  background:#303030;
+  color:#fff;
+}
+
+body.dark .small{
+  color:#bbb;
+}
+
+body.dark input[type=text]{
+  background:#2b2b2b;
+  color:white;
+  border-color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>📚 Study MCQ App</h1>
+<p>Learn • Practice • Improve</p>
+</header>
+
+<div class="container">
+
+<!-- HOME -->
+<section id="home" class="card">
+<h2>🎯 Choose an Option</h2>
+
+<button onclick="showGenerator()">
+🧠 Generate MCQs
+</button>
+
+<button onclick="showPDF()">
+📄 Solve MCQ PDF
+</button>
+
+<button onclick="toggleDark()">
+🌙 Dark Mode
+</button>
+</section>
+
+
+<!-- GENERATOR -->
+<section id="generator" class="card hidden">
+
+<h2>🧠 Generate MCQs</h2>
+
+<p>Enter your subject/topic:</p>
+
+<input
+type="text"
+id="topic"
+placeholder="Example: Pharmacology"
+/>
+
+<button onclick="generateMCQs()">
+Generate Questions
+</button>
+
+<div id="generated"></div>
+
+<button onclick="goHome()">
+🏠 Home
+</button>
+
+</section>
+
+
+<!-- PDF -->
+<section id="pdfSection" class="card hidden">
+
+<h2>📄 Solve MCQ PDF</h2>
+
+<p>Select your MCQ PDF:</p>
+
+<input
+type="file"
+id="pdfFile"
+accept=".pdf,application/pdf"
+/>
+
+<button onclick="loadPDF()">
+📥 Load PDF
+</button>
+
+<div id="pdfStatus"></div>
+
+<p class="small">
+PDF upload option is ready. PDF text extraction can be added with PDF.js.
+</p>
+
+<button onclick="goHome()">
+🏠 Home
+</button>
+
+</section>
+
+
+<!-- QUIZ -->
+<section id="quiz" class="card hidden">
+
+<div id="questionNumber"></div>
+
+<h2 id="question"></h2>
+
+<div id="options"></div>
+
+<div id="feedback"></div>
+
+<button id="nextBtn" class="hidden" onclick="nextQuestion()">
+➡️ Next Question
+</button>
+
+</section>
+
+
+<!-- RESULT -->
+<section id="result" class="card hidden">
+
+<h2>🎉 Quiz Completed!</h2>
+
+<div class="score" id="finalScore"></div>
+
+<div id="resultMessage"></div>
+
+<button onclick="restartQuiz()">
+🔄 Try Again
+</button>
+
+<button onclick="goHome()">
+🏠 Home
+</button>
+
+</section>
+
+</div>
+
+<footer>
+📚 Study MCQ App • Practice Every Day
+</footer>
+
+
+<script>
+
+let quizQuestions = [];
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+
+/* QUESTION DATABASE */
+
+const questionBank = {
+
+pharmacology: [
+
+{
+q:"What is pharmacology?",
+options:[
+"Study of drugs",
+"Study of plants",
+"Study of microbes",
+"Study of anatomy"
+],
+answer:0,
+explanation:"Pharmacology is the study of drugs and their effects."
+},
+
+{
+q:"ADME stands for:",
+options:[
+"Absorption, Distribution, Metabolism, Excretion",
+"Administration, Drug, Medicine, Effect",
+"Absorption, Drug, Metabolism, Effect",
+"None of these"
+],
+answer:0,
+explanation:"ADME means Absorption, Distribution, Metabolism and Excretion."
+},
+
+{
+q:"Which organ is mainly responsible for drug metabolism?",
+options:[
+"Heart",
+"Liver",
+"Lung",
+"Skin"
+],
+answer:1,
+explanation:"The liver is the major site of drug metabolism."
+},
+
+{
+q:"Which route of administration is generally fastest?",
+options:[
+"Oral",
+"Intravenous",
+"Topical",
+"Rectal"
+],
+answer:1,
+explanation:"Intravenous administration delivers the drug directly into the bloodstream."
+},
+
+{
+q:"What does CNS stand for?",
+options:[
+"Central Nervous System",
+"Cardiac Nervous System",
+"Central Normal System",
+"None"
+],
+answer:0,
+explanation:"CNS means Central Nervous System."
+}
+
+],
+
+microbiology:[
+
+{
+q:"Bacteria are generally:",
+options:[
+"Prokaryotic",
+"Eukaryotic",
+"Multicellular animals",
+"Viruses"
+],
+answer:0,
+explanation:"Bacteria are prokaryotic organisms."
+},
+
+{
+q:"Which instrument is commonly used for sterilization by steam?",
+options:[
+"Autoclave",
+"Microscope",
+"Incubator",
+"Balance"
+],
+answer:0,
+explanation:"An autoclave uses steam under pressure for sterilization."
+},
+
+{
+q:"Viruses can multiply only inside:",
+options:[
+"Water",
+"Living cells",
+"Air",
+"Soil"
+],
+answer:1,
+explanation:"Viruses require living host cells for replication."
+}
+
+],
+
+pharmaceutics:[
+
+{
+q:"What is viscosity?",
+options:[
+"Resistance to flow",
+"Density of liquid",
+"Weight of liquid",
+"Temperature"
+],
+answer:0,
+explanation:"Viscosity is the resistance offered by a fluid to flow."
+},
+
+{
+q:"What is an emulsion?",
+options:[
+"Mixture of two immiscible liquids",
+"Pure solid",
+"Gas only",
+"Pure water"
+],
+answer:0,
+explanation:"An emulsion contains two immiscible liquids, one dispersed in the other."
+},
+
+{
+q:"The usual concentration of normal saline is:",
+options:[
+"0.9% NaCl",
+"9% NaCl",
+"0.09% NaCl",
+"5% NaCl"
+],
+answer:0,
+explanation:"Normal saline contains 0.9% sodium chloride."
+}
+
+],
+
+general:[
+
+{
+q:"Which of the following is important for effective learning?",
+options:[
+"Regular practice",
+"Never revising",
+"Skipping questions",
+"Not studying"
+],
+answer:0,
+explanation:"Regular practice improves learning and retention."
+},
+
+{
+q:"Which habit can improve exam preparation?",
+options:[
+"Regular revision",
+"Skipping classes",
+"Never practicing",
+"Studying only one hour before exam"
+],
+answer:0,
+explanation:"Regular revision helps improve memory and understanding."
+}
+
+]
+
+};
+
+
+/* PAGE FUNCTIONS */
+
+function hideAll(){
+
+document.getElementById("home").classList.add("hidden");
+document.getElementById("generator").classList.add("hidden");
+document.getElementById("pdfSection").classList.add("hidden");
+document.getElementById("quiz").classList.add("hidden");
+document.getElementById("result").classList.add("hidden");
+
+}
+
+function goHome(){
+
+hideAll();
+
+document.getElementById("home").classList.remove("hidden");
+
+}
+
+function showGenerator(){
+
+hideAll();
+
+document.getElementById("generator").classList.remove("hidden");
+
+}
+
+function showPDF(){
+
+hideAll();
+
+document.getElementById("pdfSection").classList.remove("hidden");
+
+}
+
+
+/* GENERATE MCQS */
+
+function generateMCQs(){
+
+let topic=document
+.getElementById("topic")
+.value
+.toLowerCase()
+.trim();
+
+let questions;
+
+if(topic.includes("pharmacology")){
+questions=questionBank.pharmacology;
+}
+else if(topic.includes("microbiology")){
+questions=questionBank.microbiology;
+}
+else if(topic.includes("pharmaceutics")){
+questions=questionBank.pharmaceutics;
+}
+else{
+questions=questionBank.general;
+}
+
+quizQuestions=[...questions];
+
+currentQuestion=0;
+score=0;
+
+startQuiz();
+
+}
+
+
+/* START QUIZ */
+
+function startQuiz(){
+
+hideAll();
+
+document
+.getElementById("quiz")
+.classList.remove("hidden");
+
+showQuestion();
+
+}
+
+
+/* SHOW QUESTION */
+
+function showQuestion(){
+
+answered=false;
+
+let q=quizQuestions[currentQuestion];
+
+document.getElementById("questionNumber").innerText=
+"Question "+(currentQuestion+1)+" / "+quizQuestions.length;
+
+document.getElementById("question").innerText=q.q;
+
+document.getElementById("feedback").innerText="";
+document.getElementById("feedback").className="";
+
+document.getElementById("nextBtn").classList.add("hidden");
+
+let optionsHTML="";
+
+q.options.forEach(function(option,index){
+
+optionsHTML+=
+'<button class="option" onclick="checkAnswer('+index+')">'+
+String.fromCharCode(65+index)+". "+option+
+'</button>';
+
+});
+
+document.getElementById("options").innerHTML=optionsHTML;
+
+}
+
+
+/* CHECK ANSWER */
+
+function checkAnswer(selected){
+
+if(answered) return;
+
+answered=true;
+
+let q=quizQuestions[currentQuestion];
+
+let buttons=document.querySelectorAll(".option");
+
+if(selected===q.answer){
+
+score++;
+
+buttons[selected].classList.add("correct");
+
+document.getElementById("feedback").innerText=
+"✅ Correct! "+q.explanation;
+
+document.getElementById("feedback").className=
+"feedback";
+
+}
+else{
+
+buttons[selected].classList.add("wrong");
+
+buttons[q.answer].classList.add("correct");
+
+document.getElementById("feedback").innerText=
+"❌ Wrong! Correct answer: "+
+q.options[q.answer]+
+" — "+q.explanation;
+
+document.getElementById("feedback").className=
+"feedback";
+
+}
+
+document.getElementById("nextBtn").classList.remove("hidden");
+
+}
+
+
+/* NEXT */
+
+function nextQuestion(){
+
+currentQuestion++;
+
+if(currentQuestion<quizQuestions.length){
+
+showQuestion();
+
+}
+else{
+
+showResult();
+
+}
+
+}
+
+
+/* RESULT */
+
+function showResult(){
+
+hideAll();
+
+document.getElementById("result")
+.classList.remove("hidden");
+
+document.getElementById("finalScore").innerText=
+"Score: "+score+" / "+quizQuestions.length;
+
+let percentage=
+(score/quizQuestions.length)*100;
+
+let message="";
+
+if(percentage===100){
+message="🏆 Excellent! Perfect score!";
+}
+else if(percentage>=70){
+message="👏 Very good! Keep practicing!";
+}
+else if(percentage>=40){
+message="👍 Good effort! Revise and try again.";
+}
+else{
+message="💪 Keep practicing. You can improve!";
+}
+
+document.getElementById("resultMessage").innerText=message;
+
+}
+
+
+/* RESTART */
+
+function restartQuiz(){
+
+currentQuestion=0;
+score=0;
+
+startQuiz();
+
+}
+
+
+/* PDF */
+
+function loadPDF(){
+
+let file=document
+.getElementById("pdfFile")
+.files[0];
+
+let status=document.getElementById("pdfStatus");
+
+if(!file){
+
+status.innerHTML=
+"<p>⚠️ Please select a PDF first.</p>";
+
+return;
+
+}
+
+if(file.type!=="application/pdf"){
+
+status.innerHTML=
+"<p>❌ Please select a PDF file.</p>";
+
+return;
+
+}
+
+status.innerHTML=
+"<p>✅ PDF selected: <b>"+
+file.name+
+"</b></p>"+
+"<p>📄 PDF is ready for processing.</p>";
+
+}
+
+
+/* DARK MODE */
+
+function toggleDark(){
+
+document.body.classList.toggle("dark");
+
+localStorage.setItem(
+"darkMode",
+document.body.classList.contains("dark")
+);
+
+}
+
+if(localStorage.getItem("darkMode")==="true"){
+
+document.body.classList.add("dark");
+
+}
+
+</script>
+
+</body>
+  </html>

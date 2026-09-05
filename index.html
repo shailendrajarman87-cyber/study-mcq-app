@@ -3,113 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Study MCQ App</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{
+  box-sizing:border-box;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6fb;
-  color: #222;
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6fb;
+  color:#222;
 }
 
-header {
-  background: #4f46e5;
-  color: white;
-  padding: 22px 15px;
-  text-align: center;
+header{
+  background:linear-gradient(135deg,#5146e5,#6c5ce7);
+  color:white;
+  text-align:center;
+  padding:28px 15px;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 27px;
+header h1{
+  margin:0;
+  font-size:30px;
 }
 
-header p {
-  margin: 7px 0 0;
+header p{
+  margin:8px 0 0;
+  font-size:16px;
 }
 
-.container {
-  max-width: 700px;
-  margin: 20px auto;
-  padding: 15px;
+.container{
+  max-width:700px;
+  margin:25px auto;
+  padding:0 15px;
 }
 
-.card {
-  background: white;
-  padding: 20px;
-  margin-bottom: 18px;
-  border-radius: 15px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.08);
+.card{
+  background:white;
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:18px;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
 }
 
-button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 10px;
-  border: 0;
-  border-radius: 10px;
-  background: #4f46e5;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
+.hidden{
+  display:none!important;
 }
 
-button:hover {
-  opacity: .9;
+h2{
+  margin-top:0;
 }
 
-.option {
-  background: #eef2ff;
-  color: #222;
-  text-align: left;
+button{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  padding:15px;
+  margin-top:12px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  background:#5146e5;
+  color:white;
 }
 
-.option.correct {
-  background: #bbf7d0;
+button:hover{
+  opacity:.9;
 }
 
-.option.wrong {
-  background: #fecaca;
+.secondary{
+  background:#e9e9f8;
+  color:#333;
 }
 
-.hidden {
-  display: none;
+input,select{
+  width:100%;
+  padding:14px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  margin-top:8px;
+  font-size:16px;
 }
 
-#feedback {
-  font-weight: bold;
-  margin-top: 15px;
+label{
+  display:block;
+  margin-top:15px;
+  font-weight:bold;
 }
 
-.score {
-  font-size: 22px;
-  font-weight: bold;
-  text-align: center;
+.option{
+  background:#f0f1ff;
+  color:#222;
+  text-align:left;
+  font-weight:normal;
 }
 
-input[type="file"] {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
+.option.correct{
+  background:#b7f7c5;
 }
 
-textarea {
-  width: 100%;
-  min-height: 130px;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  margin-top: 10px;
+.option.wrong{
+  background:#ffcaca;
 }
 
-.small {
-  font-size: 13px;
-  color: #666;
+.feedback{
+  padding:14px;
+  border-radius:10px;
+  margin-top:15px;
+  background:#f3f3f3;
+  line-height:1.5;
+}
+
+.progress{
+  height:10px;
+  background:#ddd;
+  border-radius:10px;
+  overflow:hidden;
+  margin:12px 0 20px;
+}
+
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:#5146e5;
+  transition:.3s;
+}
+
+.score{
+  text-align:center;
+  font-size:28px;
+  font-weight:bold;
+  margin:20px 0;
+}
+
+.stat{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:15px;
+}
+
+.stat div{
+  flex:1;
+  background:#f1f2fa;
+  padding:15px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.small{
+  font-size:13px;
+  color:#666;
+  line-height:1.5;
+}
+
+.success{
+  color:#16833b;
+}
+
+.error{
+  color:#c62828;
+}
+
+.fileBox{
+  border:2px dashed #aaa;
+  padding:25px 15px;
+  border-radius:14px;
+  text-align:center;
+  margin-top:15px;
+}
+
+#pdfText{
+  white-space:pre-wrap;
+  max-height:250px;
+  overflow:auto;
+  background:#f7f7f7;
+  padding:12px;
+  border-radius:10px;
+  font-size:13px;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#777;
+  font-size:13px;
 }
 </style>
 </head>
@@ -123,657 +204,642 @@ textarea {
 
 <div class="container">
 
-  <!-- HOME -->
-  <div id="home" class="card">
-    <h2>Choose an Option</h2>
+<!-- HOME -->
+<section id="home" class="card">
+  <h2>🎯 Choose an Option</h2>
 
-    <button onclick="showGenerator()">
-      🧠 Generate MCQs
-    </button>
+  <button onclick="showSection('generator')">
+    🧠 Generate MCQs
+  </button>
 
-    <button onclick="showPDF()">
-      📄 Solve MCQ PDF
-    </button>
-  </div>
+  <button onclick="showSection('pdfSection')">
+    📄 Solve MCQ PDF
+  </button>
 
-  <!-- GENERATOR -->
-  <div id="generator" class="card hidden">
-    <h2>🧠 Generate MCQs</h2>
+  <button class="secondary" onclick="toggleDarkMode()">
+    🌙 Dark Mode
+  </button>
+</section>
 
-    <p>Enter a topic:</p>
 
-    <input id="topic"
-      type="text"
-      placeholder="Example: Pharmacology"
-      style="width:100%;padding:13px;border-radius:10px;border:1px solid #ccc;">
+<!-- GENERATOR -->
+<section id="generator" class="card hidden">
 
-    <button onclick="generateMCQs()">
-      Generate Questions
-    </button>
+  <h2>🧠 Generate MCQs</h2>
 
-    <div id="generated"></div>
+  <label>📚 Select Subject</label>
 
-    <button onclick="goHome()">
-      ⬅ Back
-    </button>
-  </div>
+  <select id="subject">
+    <option value="pharmacology">Pharmacology</option>
+    <option value="microbiology">Microbiology</option>
+    <option value="pharmaceutics">Pharmaceutics</option>
+    <option value="general">General Study</option>
+  </select>
 
-  <!-- PDF -->
-  <div id="pdfSection" class="card hidden">
-    <h2>📄 Solve MCQ PDF</h2>
+  <label>🔢 Number of Questions</label>
 
-    <p>Select your MCQ PDF:</p>
+  <select id="questionCount">
+    <option value="5">5 Questions</option>
+    <option value="10" selected>10 Questions</option>
+    <option value="20">20 Questions</option>
+    <option value="50">50 Questions</option>
+  </select>
 
+  <button onclick="generateQuiz()">
+    🚀 Start MCQ Quiz
+  </button>
+
+  <button class="secondary" onclick="showSection('home')">
+    ⬅️ Back
+  </button>
+
+</section>
+
+
+<!-- PDF -->
+<section id="pdfSection" class="card hidden">
+
+  <h2>📄 Solve MCQ PDF</h2>
+
+  <p class="small">
+    Upload a PDF containing MCQ questions. The app will try to read
+    the text from the PDF.
+  </p>
+
+  <div class="fileBox">
+    📁 Select PDF
     <input type="file" id="pdfFile" accept=".pdf">
-
-    <p class="small">
-      PDF should contain MCQs with options such as A, B, C and D.
-    </p>
-
-    <button onclick="readPDF()">
-      📖 Load PDF
-    </button>
-
-    <div id="pdfStatus"></div>
-
-    <button onclick="goHome()">
-      ⬅ Back
-    </button>
   </div>
 
-  <!-- QUIZ -->
-  <div id="quiz" class="card hidden">
+  <button onclick="readPDF()">
+    📖 Read PDF
+  </button>
 
-    <div id="questionNumber"></div>
+  <div id="pdfStatus"></div>
 
-    <h2 id="question"></h2>
+  <div id="pdfText" class="hidden"></div>
 
-    <div id="options"></div>
+  <button id="pdfQuizButton"
+          class="hidden"
+          onclick="startPDFQuiz()">
+    🎯 Start PDF Quiz
+  </button>
 
-    <div id="feedback"></div>
+  <button class="secondary" onclick="showSection('home')">
+    ⬅️ Back
+  </button>
 
-    <button id="nextBtn" onclick="nextQuestion()" class="hidden">
-      Next Question ➡
-    </button>
+</section>
 
+
+<!-- QUIZ -->
+<section id="quiz" class="card hidden">
+
+  <div id="questionNumber"></div>
+
+  <div class="progress">
+    <div id="progressBar" class="progress-bar"></div>
   </div>
 
-  <!-- RESULT -->
-  <div id="result" class="card hidden">
+  <h2 id="question"></h2>
 
-    <h2>🎉 Quiz Completed!</h2>
+  <div id="options"></div>
 
-    <div class="score" id="finalScore"></div>
+  <div id="feedback" class="feedback hidden"></div>
 
-    <button onclick="restartQuiz()">
-      🔄 Try Again
-    </button>
+  <button id="nextButton"
+          class="hidden"
+          onclick="nextQuestion()">
+    Next Question ➡️
+  </button>
 
-    <button onclick="goHome()">
-      🏠 Home
-    </button>
+  <button class="secondary" onclick="showSection('home')">
+    🏠 Home
+  </button>
 
+</section>
+
+
+<!-- RESULT -->
+<section id="result" class="card hidden">
+
+  <h2>🏆 Quiz Completed!</h2>
+
+  <div class="score" id="finalScore"></div>
+
+  <div class="stat">
+    <div>
+      <b id="correctCount">0</b>
+      <br>
+      <span class="success">Correct</span>
+    </div>
+
+    <div>
+      <b id="wrongCount">0</b>
+      <br>
+      <span class="error">Wrong</span>
+    </div>
   </div>
+
+  <div class="score" id="percentage"></div>
+
+  <button onclick="restartQuiz()">
+    🔄 Try Again
+  </button>
+
+  <button class="secondary" onclick="showSection('home')">
+    🏠 Home
+  </button>
+
+</section>
 
 </div>
 
+<footer>
+  📚 Study MCQ App • Practice Every Day
+</footer>
+
+
+<!-- PDF.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <script>
 
-/* -------------------------
-   SAMPLE QUESTION DATABASE
--------------------------- */
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+
+/* =========================
+   QUESTION DATABASE
+========================= */
 
 const questionBank = {
 
-  pharmacology: [
-    {
-      q: "What is pharmacology?",
-      options: [
-        "Study of drugs",
-        "Study of plants",
-        "Study of microbes",
-        "Study of anatomy"
-      ],
-      answer: 0,
-      explanation: "Pharmacology is the study of drugs and their effects."
-    },
+pharmacology:[
 
-    {
-      q: "ADME stands for:",
-      options: [
-        "Absorption, Distribution, Metabolism, Excretion",
-        "Administration, Drug, Medicine, Effect",
-        "Absorption, Drug, Metabolism, Effect",
-        "None of these"
-      ],
-      answer: 0,
-      explanation: "ADME means Absorption, Distribution, Metabolism and Excretion."
-    },
+{
+q:"What is pharmacology?",
+options:[
+"Study of drugs",
+"Study of plants",
+"Study of microbes",
+"Study of anatomy"
+],
+answer:0,
+explanation:"Pharmacology is the study of drugs and their effects."
+},
 
-    {
-      q: "Which organ is mainly responsible for drug metabolism?",
-      options: [
-        "Heart",
-        "Liver",
-        "Lung",
-        "Skin"
-      ],
-      answer: 1,
-      explanation: "The liver is the major site of drug metabolism."
-    }
-  ],
+{
+q:"ADME stands for:",
+options:[
+"Absorption, Distribution, Metabolism, Excretion",
+"Administration, Drug, Medicine, Effect",
+"Absorption, Drug, Metabolism, Effect",
+"None of these"
+],
+answer:0,
+explanation:"ADME means Absorption, Distribution, Metabolism and Excretion."
+},
 
-  microbiology: [
-    {
-      q: "Bacteria are generally:",
-      options: [
-        "Prokaryotic",
-        "Eukaryotic",
-        "Multicellular animals",
-        "Viruses"
-      ],
-      answer: 0,
-      explanation: "Bacteria are prokaryotic organisms."
-    }
-  ],
+{
+q:"Which organ is mainly responsible for drug metabolism?",
+options:[
+"Heart",
+"Liver",
+"Lung",
+"Skin"
+],
+answer:1,
+explanation:"The liver is the major site of drug metabolism."
+},
 
-  pharmaceutics: [
-    {
-      q: "What is viscosity?",
-      options: [
-        "Resistance to flow",
-        "Density of liquid",
-        "Weight of liquid",
-        "Temperature"
-      ],
-      answer: 0,
-      explanation: "Viscosity is the resistance offered by a fluid to flow."
-    }
-  ]
+{
+q:"What is pharmacokinetics?",
+options:[
+"What the drug does to the body",
+"What the body does to the drug",
+"Drug manufacturing",
+"Drug storage"
+],
+answer:1,
+explanation:"Pharmacokinetics describes what the body does to a drug."
+},
+
+{
+q:"Which route of administration is usually fastest for systemic effect?",
+options:[
+"Oral",
+"Intravenous",
+"Topical",
+"Rectal"
+],
+answer:1,
+explanation:"Intravenous administration delivers the drug directly into the bloodstream."
+},
+
+{
+q:"What is drug tolerance?",
+options:[
+"Increased response to a drug",
+"Reduced response after repeated use",
+"Drug allergy",
+"Drug absorption"
+],
+answer:1,
+explanation:"Tolerance means a reduced response after repeated exposure to a drug."
+},
+
+{
+q:"What is drug absorption?",
+options:[
+"Removal of drug",
+"Movement of drug into systemic circulation",
+"Drug metabolism",
+"Drug excretion"
+],
+answer:1,
+explanation:"Absorption is the movement of a drug from its site of administration into systemic circulation."
+},
+
+{
+q:"Which process removes many drugs from the body?",
+options:[
+"Excretion",
+"Absorption",
+"Distribution",
+"Binding"
+],
+answer:0,
+explanation:"Excretion removes drugs and their metabolites from the body."
+},
+
+{
+q:"Which is a common site of drug excretion?",
+options:[
+"Kidney",
+"Hair",
+"Bone",
+"Teeth"
+],
+answer:0,
+explanation:"The kidneys are a major route of drug excretion."
+},
+
+{
+q:"What is pharmacodynamics?",
+options:[
+"What the drug does to the body",
+"What the body does to the drug",
+"Drug storage",
+"Drug formulation"
+],
+answer:0,
+explanation:"Pharmacodynamics describes the effects of drugs on the body."
+}
+
+],
+
+
+microbiology:[
+
+{
+q:"Bacteria are generally:",
+options:[
+"Prokaryotic",
+"Eukaryotic",
+"Multicellular animals",
+"Viruses"
+],
+answer:0,
+explanation:"Bacteria are prokaryotic organisms."
+},
+
+{
+q:"Which structure is present in bacterial cells?",
+options:[
+"Cell wall",
+"Nucleus",
+"Chloroplast",
+"Mitochondria"
+],
+answer:0,
+explanation:"Most bacteria have a cell wall."
+},
+
+{
+q:"Which instrument is commonly used to observe microorganisms?",
+options:[
+"Microscope",
+"Stethoscope",
+"Thermometer",
+"Barometer"
+],
+answer:0,
+explanation:"Microscopes are used to observe microorganisms."
+},
+
+{
+q:"Viruses are:",
+options:[
+"Cellular organisms",
+"Acellular infectious agents",
+"Plants",
+"Fungi"
+],
+answer:1,
+explanation:"Viruses are acellular infectious agents."
+},
+
+{
+q:"Which stain is commonly used to classify bacteria?",
+options:[
+"Gram stain",
+"Iodine value",
+"Acid value",
+"Biuret test"
+],
+answer:0,
+explanation:"Gram staining differentiates bacteria based on cell wall characteristics."
+}
+
+],
+
+
+pharmaceutics:[
+
+{
+q:"What is viscosity?",
+options:[
+"Resistance offered by a fluid to flow",
+"Density of liquid",
+"Weight of liquid",
+"Temperature"
+],
+answer:0,
+explanation:"Viscosity is the resistance offered by a fluid to flow."
+},
+
+{
+q:"Which device can be used to measure viscosity?",
+options:[
+"Viscometer",
+"Microscope",
+"Thermometer",
+"pH paper"
+],
+answer:0,
+explanation:"A viscometer is used to measure viscosity."
+},
+
+{
+q:"What is a suspension?",
+options:[
+"Solid particles dispersed in a liquid",
+"Gas in gas",
+"Liquid in gas only",
+"Pure solid"
+],
+answer:0,
+explanation:"A suspension contains insoluble solid particles dispersed in a liquid."
+},
+
+{
+q:"What is an emulsion?",
+options:[
+"Two immiscible liquids",
+"Solid only",
+"Gas only",
+"Pure water"
+],
+answer:0,
+explanation:"An emulsion is a dispersion of one immiscible liquid in another."
+},
+
+{
+q:"What is density?",
+options:[
+"Mass per unit volume",
+"Volume per unit mass",
+"Weight only",
+"Temperature"
+],
+answer:0,
+explanation:"Density is mass divided by volume."
+}
+
+],
+
+
+general:[
+
+{
+q:"Which habit is useful for effective learning?",
+options:[
+"Regular revision",
+"Never revising",
+"Skipping questions",
+"Not studying"
+],
+answer:0,
+explanation:"Regular revision helps improve learning and retention."
+},
+
+{
+q:"Which technique helps test your memory?",
+options:[
+"Active recall",
+"Never practicing",
+"Only reading once",
+"Skipping revision"
+],
+answer:0,
+explanation:"Active recall is a useful study technique."
+},
+
+{
+q:"What is MCQ?",
+options:[
+"Multiple Choice Question",
+"Medical Course Question",
+"Main Class Quiz",
+"Multiple Class Query"
+],
+answer:0,
+explanation:"MCQ stands for Multiple Choice Question."
+}
+
+]
+
 };
 
 
-let quizQuestions = [];
-let currentQuestion = 0;
-let score = 0;
-let answered = false;
-
-
-/* -------------------------
-   PAGE NAVIGATION
--------------------------- */
-
-function hideAll() {
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("generator").classList.add("hidden");
-  document.getElementById("pdfSection").classList.add("hidden");
-  document.getElementById("quiz").classList.add("hidden");
-  document.getElementById("result").classList.add("hidden");
-}
-
-function goHome() {
-  hideAll();
-  document.getElementById("home").classList.remove("hidden");
-}
-
-function showGenerator() {
- <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Study MCQ App</title>
-
-<style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6fb;
-  color: #222;
-}
-
-header {
-  background: #4f46e5;
-  color: white;
-  padding: 22px 15px;
-  text-align: center;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 27px;
-}
-
-header p {
-  margin: 7px 0 0;
-}
-
-.container {
-  max-width: 700px;
-  margin: 20px auto;
-  padding: 15px;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  margin-bottom: 18px;
-  border-radius: 15px;
-  box-shadow: 0 3px 12px rgba(0,0,0,.08);
-}
-
-button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 10px;
-  border: 0;
-  border-radius: 10px;
-  background: #4f46e5;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: .9;
-}
-
-.option {
-  background: #eef2ff;
-  color: #222;
-  text-align: left;
-}
-
-.option.correct {
-  background: #bbf7d0;
-}
-
-.option.wrong {
-  background: #fecaca;
-}
-
-.hidden {
-  display: none;
-}
-
-#feedback {
-  font-weight: bold;
-  margin-top: 15px;
-}
-
-.score {
-  font-size: 22px;
-  font-weight: bold;
-  text-align: center;
-}
-
-input[type="file"] {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-}
-
-textarea {
-  width: 100%;
-  min-height: 130px;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  margin-top: 10px;
-}
-
-.small {
-  font-size: 13px;
-  color: #666;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-  <h1>📚 Study MCQ App</h1>
-  <p>Learn • Practice • Improve</p>
-</header>
-
-<div class="container">
-
-  <!-- HOME -->
-  <div id="home" class="card">
-    <h2>Choose an Option</h2>
-
-    <button onclick="showGenerator()">
-      🧠 Generate MCQs
-    </button>
-
-    <button onclick="showPDF()">
-      📄 Solve MCQ PDF
-    </button>
-  </div>
-
-  <!-- GENERATOR -->
-  <div id="generator" class="card hidden">
-    <h2>🧠 Generate MCQs</h2>
-
-    <p>Enter a topic:</p>
-
-    <input id="topic"
-      type="text"
-      placeholder="Example: Pharmacology"
-      style="width:100%;padding:13px;border-radius:10px;border:1px solid #ccc;">
-
-    <button onclick="generateMCQs()">
-      Generate Questions
-    </button>
-
-    <div id="generated"></div>
-
-    <button onclick="goHome()">
-      ⬅ Back
-    </button>
-  </div>
-
-  <!-- PDF -->
-  <div id="pdfSection" class="card hidden">
-    <h2>📄 Solve MCQ PDF</h2>
-
-    <p>Select your MCQ PDF:</p>
-
-    <input type="file" id="pdfFile" accept=".pdf">
-
-    <p class="small">
-      PDF should contain MCQs with options such as A, B, C and D.
-    </p>
-
-    <button onclick="readPDF()">
-      📖 Load PDF
-    </button>
-
-    <div id="pdfStatus"></div>
-
-    <button onclick="goHome()">
-      ⬅ Back
-    </button>
-  </div>
-
-  <!-- QUIZ -->
-  <div id="quiz" class="card hidden">
-
-    <div id="questionNumber"></div>
-
-    <h2 id="question"></h2>
-
-    <div id="options"></div>
-
-    <div id="feedback"></div>
-
-    <button id="nextBtn" onclick="nextQuestion()" class="hidden">
-      Next Question ➡
-    </button>
-
-  </div>
-
-  <!-- RESULT -->
-  <div id="result" class="card hidden">
-
-    <h2>🎉 Quiz Completed!</h2>
-
-    <div class="score" id="finalScore"></div>
-
-    <button onclick="restartQuiz()">
-      🔄 Try Again
-    </button>
-
-    <button onclick="goHome()">
-      🏠 Home
-    </button>
-
-  </div>
-
-</div>
-
-
-<script>
-
-/* -------------------------
-   SAMPLE QUESTION DATABASE
--------------------------- */
-
-const questionBank = {
-
-  pharmacology: [
-    {
-      q: "What is pharmacology?",
-      options: [
-        "Study of drugs",
-        "Study of plants",
-        "Study of microbes",
-        "Study of anatomy"
-      ],
-      answer: 0,
-      explanation: "Pharmacology is the study of drugs and their effects."
-    },
-
-    {
-      q: "ADME stands for:",
-      options: [
-        "Absorption, Distribution, Metabolism, Excretion",
-        "Administration, Drug, Medicine, Effect",
-        "Absorption, Drug, Metabolism, Effect",
-        "None of these"
-      ],
-      answer: 0,
-      explanation: "ADME means Absorption, Distribution, Metabolism and Excretion."
-    },
-
-    {
-      q: "Which organ is mainly responsible for drug metabolism?",
-      options: [
-        "Heart",
-        "Liver",
-        "Lung",
-        "Skin"
-      ],
-      answer: 1,
-      explanation: "The liver is the major site of drug metabolism."
-    }
-  ],
-
-  microbiology: [
-    {
-      q: "Bacteria are generally:",
-      options: [
-        "Prokaryotic",
-        "Eukaryotic",
-        "Multicellular animals",
-        "Viruses"
-      ],
-      answer: 0,
-      explanation: "Bacteria are prokaryotic organisms."
-    }
-  ],
-
-  pharmaceutics: [
-    {
-      q: "What is viscosity?",
-      options: [
-        "Resistance to flow",
-        "Density of liquid",
-        "Weight of liquid",
-        "Temperature"
-      ],
-      answer: 0,
-      explanation: "Viscosity is the resistance offered by a fluid to flow."
-    }
-  ]
-};
-
-
-let quizQuestions = [];
-let currentQuestion = 0;
-let score = 0;
-let answered = false;
-
-
-/* -------------------------
-   PAGE NAVIGATION
--------------------------- */
-
-function hideAll() {
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("generator").classList.add("hidden");
-  document.getElementById("pdfSection").classList.add("hidden");
-  document.getElementById("quiz").classList.add("hidden");
-  document.getElementById("result").classList.add("hidden");
-}
-
-function goHome() {
-  hideAll();
-  document.getElementById("home").classList.remove("hidden");
-}
-
-function showGenerator() {
-  hideAll();
-  document.getElementById("generator").classList.remove("hidden");
-}
-
-function showPDF() {
-  hideAll();
-  document.getElementById("pdfSection").classList.remove("hidden");
+/* =========================
+   VARIABLES
+========================= */
+
+let quizQuestions=[];
+let currentQuestion=0;
+let score=0;
+let answered=false;
+let pdfQuestions=[];
+
+
+/* =========================
+   SECTION CONTROL
+========================= */
+
+function showSection(id){
+
+  const sections=[
+    "home",
+    "generator",
+    "pdfSection",
+    "quiz",
+    "result"
+  ];
+
+  sections.forEach(section=>{
+    document.getElementById(section)
+      .classList.add("hidden");
+  });
+
+  document.getElementById(id)
+    .classList.remove("hidden");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
 
-/* -------------------------
-   GENERATE MCQs
--------------------------- */
+/* =========================
+   GENERATE QUIZ
+========================= */
 
-function generateMCQs() {
+function generateQuiz(){
 
-  let topic = document
-    .getElementById("topic")
-    .value
-    .toLowerCase()
-    .trim();
+  const subject=
+    document.getElementById("subject").value;
 
-  let questions = [];
+  const count=
+    parseInt(
+      document.getElementById("questionCount").value
+    );
 
-  if (topic.includes("pharmacology")) {
-    questions = questionBank.pharmacology;
-  }
-  else if (topic.includes("microbiology")) {
-    questions = questionBank.microbiology;
-  }
-  else if (topic.includes("pharmaceutics")) {
-    questions = questionBank.pharmaceutics;
-  }
-  else {
-    questions = [
-      {
-        q: "Which of the following is important for effective learning?",
-        options: [
-          "Regular practice",
-          "Never revising",
-          "Skipping questions",
-          "Not studying"
-        ],
-        answer: 0,
-        explanation: "Regular practice improves learning and retention."
-      }
-    ];
+  let bank=questionBank[subject];
+
+  quizQuestions=[];
+
+  for(let i=0;i<count;i++){
+    quizQuestions.push(
+      bank[i % bank.length]
+    );
   }
 
-  quizQuestions = [...questions];
   startQuiz();
 }
 
 
-/* -------------------------
+/* =========================
    START QUIZ
--------------------------- */
+========================= */
 
-function startQuiz() {
+function startQuiz(){
 
-  currentQuestion = 0;
-  score = 0;
+  currentQuestion=0;
+  score=0;
 
-  hideAll();
-
-  document.getElementById("quiz")
-    .classList.remove("hidden");
+  showSection("quiz");
 
   showQuestion();
 }
 
 
-/* -------------------------
+/* =========================
    SHOW QUESTION
--------------------------- */
+========================= */
 
-function showQuestion() {
+function showQuestion(){
 
-  answered = false;
+  answered=false;
 
-  let q = quizQuestions[currentQuestion];
+  const q=
+    quizQuestions[currentQuestion];
 
-  document.getElementById("questionNumber").innerText =
-    "Question " + (currentQuestion + 1) +
-    " / " + quizQuestions.length;
+  document.getElementById("questionNumber")
+    .innerText=
+    "Question "+
+    (currentQuestion+1)+
+    " / "+
+    quizQuestions.length;
 
-  document.getElementById("question").innerText = q.q;
+  document.getElementById("question")
+    .innerText=q.q;
 
-  document.getElementById("feedback").innerText = "";
-
-  document.getElementById("nextBtn")
+  document.getElementById("feedback")
     .classList.add("hidden");
 
-  let optionsHTML = "";
+  document.getElementById("nextButton")
+    .classList.add("hidden");
 
-  q.options.forEach((option, index) => {
+  const progress=
+    ((currentQuestion)/
+    quizQuestions.length)*100;
 
-    optionsHTML += `
-      <button class="option"
-      onclick="checkAnswer(${index})">
-      ${String.fromCharCode(65 + index)}. ${option}
+  document.getElementById("progressBar")
+    .style.width=progress+"%";
+
+  let html="";
+
+  q.options.forEach((option,index)=>{
+
+    html+=`
+      <button
+        class="option"
+        onclick="checkAnswer(${index})">
+
+        ${String.fromCharCode(65+index)}.
+        ${option}
+
       </button>
     `;
-
   });
 
-  document.getElementById("options").innerHTML = optionsHTML;
+  document.getElementById("options")
+    .innerHTML=html;
 }
 
 
-/* -------------------------
+/* =========================
    CHECK ANSWER
--------------------------- */
+========================= */
 
-function checkAnswer(selected) {
+function checkAnswer(selected){
 
-  if (answered) return;
+  if(answered) return;
 
-  answered = true;
+  answered=true;
 
-  let q = quizQuestions[currentQuestion];
+  const q=
+    quizQuestions[currentQuestion];
 
-  let buttons =
+  const buttons=
     document.querySelectorAll(".option");
 
-  if (selected === q.answer) {
+  if(selected===q.answer){
 
     score++;
 
     buttons[selected]
       .classList.add("correct");
 
-    document.getElementById("feedback").innerText =
-      "✅ Correct! " + q.explanation;
+    document.getElementById("feedback")
+      .innerHTML=
+      "✅ <b>Correct!</b><br>"+
+      q.explanation;
 
-  } else {
+  }else{
 
     buttons[selected]
       .classList.add("wrong");
@@ -781,193 +847,257 @@ function checkAnswer(selected) {
     buttons[q.answer]
       .classList.add("correct");
 
-    document.getElementById("feedback").innerText =
-      "❌ Wrong! Correct answer: " +
-      q.options[q.answer] +
-      ". " + q.explanation;
+    document.getElementById("feedback")
+      .innerHTML=
+      "❌ <b>Wrong!</b><br>"+
+      "Correct Answer: "+
+      q.options[q.answer]+
+      "<br><br>"+
+      q.explanation;
   }
 
-  document.getElementById("nextBtn")
+  document.getElementById("feedback")
+    .classList.remove("hidden");
+
+  document.getElementById("nextButton")
     .classList.remove("hidden");
 }
 
 
-/* -------------------------
+/* =========================
    NEXT QUESTION
--------------------------- */
+========================= */
 
-function nextQuestion() {
+function nextQuestion(){
 
   currentQuestion++;
 
-  if (currentQuestion >= quizQuestions.length) {
-    showResult();
-  } else {
+  if(currentQuestion<
+     quizQuestions.length){
+
     showQuestion();
+
+  }else{
+
+    showResult();
   }
 }
 
 
-/* -------------------------
+/* =========================
    RESULT
--------------------------- */
+========================= */
 
-function showResult() {
+function showResult(){
 
-  hideAll();
+  showSection("result");
 
-  document.getElementById("result")
-    .classList.remove("hidden");
-
-  document.getElementById("finalScore").innerText =
-    "Your Score: " +
-    score +
-    " / " +
+  const total=
     quizQuestions.length;
+
+  const wrong=
+    total-score;
+
+  const percent=
+    Math.round(
+      (score/total)*100
+    );
+
+  document.getElementById("finalScore")
+    .innerText=
+    "Score: "+score+" / "+total;
+
+  document.getElementById("correctCount")
+    .innerText=score;
+
+  document.getElementById("wrongCount")
+    .innerText=wrong;
+
+  document.getElementById("percentage")
+    .innerText=
+    percent+"%";
+
+  document.getElementById("progressBar")
+    .style.width="100%";
 }
 
 
-/* -------------------------
+/* =========================
    RESTART
--------------------------- */
+========================= */
 
-function restartQuiz() {
-  startQuiz();
-}
+function restartQuiz(){
 
+  currentQuestion=0;
+  score=0;
 
-/* -------------------------
-   SIMPLE PDF TEXT READER
--------------------------- */
-
-async function readPDF() {
-
-  const file =
-    document.getElementById("pdfFile").files[0];
-
-  if (!file) {
-    alert("Please select a PDF first.");
-    return;
-  }
-
-  document.getElementById("pdfStatus").innerHTML =
-    "<p>📖 PDF selected. PDF question extraction will require a PDF reader library.</p>" +
-    "<p>You can use the Generate MCQs section for now.</p>";
-}
-
-
-
-
-
-  
-
-
-function showPDF() {
-  hideAll();
-  document.getElementById("pdfSection").classList.remove("hidden");
-}
-
-
-/* -------------------------
-   GENERATE MCQs
--------------------------- */
-
-function generateMCQs() {
-
-  let topic = document
-    .getElementById("topic")
-    .value
-    .toLowerCase()
-    .trim();
-
-  let questions = [];
-
-  if (topic.includes("pharmacology")) {
-    questions = questionBank.pharmacology;
-  }
-  else if (topic.includes("microbiology")) {
-    questions = questionBank.microbiology;
-  }
-  else if (topic.includes("pharmaceutics")) {
-    questions = questionBank.pharmaceutics;
-  }
-  else {
-    questions = [
-      {
-        q: "Which of the following is important for effective learning?",
-        options: [
-          "Regular practice",
-          "Never revising",
-          "Skipping questions",
-          "Not studying"
-        ],
-        answer: 0,
-        explanation: "Regular practice improves learning and retention."
-      }
-    ];
-  }
-
-  quizQuestions = [...questions];
-  startQuiz();
-}
-
-
-/* -------------------------
-   START QUIZ
--------------------------- */
-
-function startQuiz() {
-
-  currentQuestion = 0;
-  score = 0;
-
-  hideAll();
-
-  document.getElementById("quiz")
-    .classList.remove("hidden");
+  showSection("quiz");
 
   showQuestion();
 }
 
 
-/* -------------------------
-   SHOW QUESTION
--------------------------- */
+/* =========================
+   PDF READER
+========================= */
 
-function showQuestion() {
+async function readPDF(){
 
-  answered = false;
+  const file=
+    document.getElementById("pdfFile")
+    .files[0];
 
-  let q = quizQuestions[currentQuestion];
+  const status=
+    document.getElementById("pdfStatus");
 
-  document.getElementById("questionNumber").innerText =
-    "Question " + (currentQuestion + 1) +
-    " / " + quizQuestions.length;
+  const textBox=
+    document.getElementById("pdfText");
 
-  document.getElementById("question").innerText = q.q;
+  const quizButton=
+    document.getElementById("pdfQuizButton");
 
-  document.getElementById("feedback").innerText = "";
+  if(!file){
 
-  document.getElementById("nextBtn")
-    .classList.add("hidden");
+    status.innerHTML=
+      "<p class='error'>❌ Please select a PDF first.</p>";
 
-  let optionsHTML = "";
+    return;
+  }
 
-  q.options.forEach((option, index) => {
+  status.innerHTML=
+    "<p>⏳ Reading PDF...</p>";
 
-    optionsHTML += `
-      <button class="option"
-      onclick="checkAnswer(${index})">
-      ${String.fromCharCode(65 + index)}. ${option}
-      </button>
-    `;
+  textBox.classList.add("hidden");
 
-  });
+  try{
 
-  document.getElementById("options").innerHTML = optionsHTML;
+    const arrayBuffer=
+      await file.arrayBuffer();
+
+    const pdf=
+      await pdfjsLib
+      .getDocument({
+        data:arrayBuffer
+      })
+      .promise;
+
+    let fullText="";
+
+    for(
+      let pageNumber=1;
+      pageNumber<=pdf.numPages;
+      pageNumber++
+    ){
+
+      const page=
+        await pdf.getPage(pageNumber);
+
+      const content=
+        await page.getTextContent();
+
+      const pageText=
+        content.items
+        .map(item=>item.str)
+        .join(" ");
+
+      fullText+=
+        pageText+
+        "\n";
+    }
+
+    if(!fullText.trim()){
+
+      status.innerHTML=
+        "<p class='error'>❌ Text could not be extracted from this PDF.</p>";
+
+      return;
+    }
+
+    textBox.innerText=
+      fullText.substring(0,10000);
+
+    textBox.classList.remove("hidden");
+
+    status.innerHTML=
+      "<p class='success'>✅ PDF read successfully!</p>";
+
+    pdfQuestions=
+      parseMCQs(fullText);
+
+    if(pdfQuestions.length>0){
+
+      quizButton.classList.remove("hidden");
+
+      status.innerHTML+=
+        "<p class='success'>🎯 "+
+        pdfQuestions.length+
+        " MCQs detected.</p>";
+
+    }else{
+
+      status.innerHTML+=
+        "<p>⚠️ MCQ format was not detected automatically.</p>";
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    status.innerHTML=
+      "<p class='error'>❌ Error reading PDF.</p>";
+  }
 }
+
+
+/* =========================
+   SIMPLE MCQ PARSER
+========================= */
+
+function parseMCQs(text){
+
+  const questions=[];
+
+  const lines=
+    text
+    .split("\n")
+    .map(x=>x.trim())
+    .filter(x=>x);
+
+  for(let i=0;i<lines.length;i++){
+
+    let qLine=lines[i];
+
+    if(
+      /^\d+[\.\)]/.test(qLine)
+    ){
+
+      let q=
+        qLine.replace(
+          /^\d+[\.\)]\s*/,
+          ""
+        );
+
+      let options=[];
+      let answer=-1;
+
+      for(
+        let j=i+1;
+        j<Math.min(i+8,lines.length);
+        j++
+      ){
+
+        const line=lines[j];
+
+        const match=
+          line.match(
+            /^([A-Da-d])[\.\)]\s*(.*)/
+          );
+
+        if(match){
+
+          options.push(match[2]);
+
 </script>
+
 </body>
 </html>
-
-

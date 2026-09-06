@@ -1,0 +1,9 @@
+{
+  "name": "Study MCQ App",
+  "short_name": "Study MCQ",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "description": "Free Study MCQ App for students"
+}

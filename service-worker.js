@@ -1,9 +1,10 @@
-const CACHE_NAME = "study-mcq-v1";
+const CACHE_NAME = "study-mcq-v2";
 
 const APP_FILES = [
   "./",
   "./index.html",
-  "./manifest.json"
+  "./manifest.json",
+  "./service-worker.js"
 ];
 
 self.addEventListener("install", event => {
@@ -32,10 +33,29 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      return cached || fetch(event.request).catch(() => {
-        return caches.match("./index.html");
-      });
+    caches.match(event.request).then(cachedResponse => {
+
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+
+      return fetch(event.request)
+        .then(response => {
+
+          if (response.ok || response.type === "opaque") {
+            const responseClone = response.clone();
+
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseClone);
+            });
+          }
+
+          return response;
+        })
+        .catch(() => {
+          return caches.match("./index.html");
+        });
+
     })
   );
 });
